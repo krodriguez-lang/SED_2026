@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recordatorios Informes SED - 2026</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-color: #385988;
+      --primary-dark: #2a4466;
+      --teal-color: #008D83;
+      --accent-color: #F68D2E;
+      --gray-color: #969798;
+      --bg-gradient: linear-gradient(135deg, #385988 0%, #008D83 100%);
+      --card-bg: #ffffff;
+      --card-shadow: rgba(0, 0, 0, 0.08);
+      --card-shadow-hover: rgba(0, 0, 0, 0.15);
+      --text-primary: #2c3e50;
+      --text-secondary: #5a6c7d;
+      --border-radius: 16px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      line-height: 1.6;
+      color: var(--text-primary);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+      animation: slideDown 0.6s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+      letter-spacing: -0.5px;
+    }
+
+    .header .subtitle {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      font-weight: 400;
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.7;
+      background: white;
+      padding: 1.2rem 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      border-left: 4px solid var(--teal-color);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: 0 10px 30px var(--card-shadow);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      position: relative;
+      animation: cardSlideUp 0.6s ease-out backwards;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-delay: 0.3s; }
+    .card:nth-child(4) { animation-delay: 0.4s; }
+    .card:nth-child(5) { animation-delay: 0.5s; }
+
+    @keyframes cardSlideUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 40px var(--card-shadow-hover);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--teal-color), var(--accent-color));
+      transition: height 0.3s ease;
+    }
+    .card:hover::before { height: 8px; }
+
+    .card-header {
+      padding: 1.8rem 1.8rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--teal-color), var(--primary-color));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(0, 141, 131, 0.3);
+    }
+
+    .card-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.4;
+    }
+
+    .card-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), padding 0.5s ease;
+      padding: 0 1.8rem;
+    }
+
+    .card.active .card-content {
+      max-height: 1000px;
+      padding: 0 1.8rem 1.8rem;
+    }
+
+    .card-description {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-top: 0.5rem;
+    }
+
+    .card-description strong { color: var(--primary-color); font-weight: 600; }
+
+    .toggle-icon {
+      margin-left: auto;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(0, 141, 131, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .toggle-icon svg {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.3s ease;
+      stroke: var(--teal-color);
+    }
+
+    .card.active .toggle-icon { background: var(--teal-color); }
+    .card.active .toggle-icon svg { transform: rotate(180deg); stroke: white; }
+
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(243, 156, 18, 0.1), rgba(255, 217, 125, 0.15));
+      border-left: 4px solid var(--accent-color);
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 8px;
+    }
+    .highlight-box p { margin: 0.5rem 0; }
+
+    @media (max-width: 768px) {
+      .header h1 { font-size: 2rem; }
+      .header .subtitle { font-size: 1rem; padding: 1rem 1.5rem; }
+      .cards-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .card-header { padding: 1.5rem 1.5rem 1rem; }
+      .card-icon { width: 40px; height: 40px; font-size: 1rem; }
+      .card-title { font-size: 1rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>📋 Recordatorios Informes SED - 2026</h1>
+      <p class="subtitle">
+        Herramienta interactiva para optimizar la gestión y entrega de informes SED 2026.
+        Acceda rápidamente a recordatorios y lineamientos esenciales mediante tarjetas desplegables.
+      </p>
+    </header>
+
+    <div class="cards-grid">
+      <!-- Tarjeta 1 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">1</div>
+          <h2 class="card-title">BLOQUE 1 OBL_4<br>Actas del consejo académico</h2>
+          <div class="toggle-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="card-description">
+            <p>
+              El acta del Consejo Académico debe consolidarse en un <strong>único archivo</strong> que contenga
+              el documento firmado a mano y el listado de asistencia escaneado en sentido de lectura.
+            </p>
+            <div class="highlight-box">
+              <p><strong>📁 Formato de nombre del archivo:</strong></p>
+              <p><code>1_4_ACTA_X_CONSEJO_ACADEMICO</code></p>
+              <p style="margin-top: 0.5rem; font-size: 0.95rem;">Sustituya la 'X' por el número de acta correspondiente.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tarjeta 2 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">2</div>
+          <h2 class="card-title">BLOQUE 2 OBL_30<br>Licencia de funcionamiento y visita SDS / Bomberos</h2>
+          <div class="toggle-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="card-description">
+            <p>Adjunte las <strong>actas de inspección</strong> emitidas por la SDS y/o Bomberos.</p>
+            <div class="highlight-box">
+              <p><strong>⚠️ En caso de no contar con la certificación oficial:</strong></p>
+              <p>Anexe el comprobante o tirilla que avale la realización de la visita.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tarjeta 3 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">3</div>
+          <h2 class="card-title">BLOQUE 4 OBL_51<br>Salidas pedagógicas</h2>
+          <div class="toggle-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="card-description">
+            <p>El cronograma de salidas pedagógicas anual debe organizarse <strong>por curso</strong>.</p>
+            <div class="highlight-box">
+              <p><strong>📝 Si no se programaron salidas:</strong></p>
+              <p>
+                Indique en la sección de <strong>'Población objeto y cobertura'</strong> que no se realizaron actividades
+                y que estas se reportarán en el siguiente corte.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tarjeta 4 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">4</div>
+          <h2 class="card-title">BLOQUE 7 OBL_51 SENA</h2>
+          <div class="toggle-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="card-description">
+            <p>
+              El informe y las evidencias de Articulación SENA deben cargarse en la carpeta del <strong>bloque 7 OBL_51</strong>,
+              fuera de la subcarpeta 'Bienestar' (los archivos deben quedar visibles en la raíz de dicha carpeta).
+            </p>
+
+            <div class="highlight-box" style="background: linear-gradient(135deg, rgba(0, 141, 131, 0.1), rgba(0, 141, 131, 0.15)); border-left-color: #008D83;">
+              <p><strong>🔗 Semáforo de evidencias SENA:</strong></p>
+              <p>
+                <a href="https://docs.google.com/spreadsheets/d/1VxmtbPlygpoAXWlKa9rTe5opWkhrIDWJumZx1jwk0yE/edit?usp=sharing"
+                   target="_blank" rel="noopener noreferrer"
+                   style="color: #008D83; text-decoration: underline; font-weight: 600;">
+                  Acceder al documento de seguimiento
+                </a>
+              </p>
+            </div>
+
+            <div class="highlight-box">
+              <p><strong>✅ Lineamientos para garantizar la calidad:</strong></p>
+              <p><strong>Notas aclaratorias:</strong> Incluya en el informe las observaciones sobre los documentos pendientes que se entregarán en el próximo corte.</p>
+              <p><strong>Trazabilidad:</strong> Adjunte los correos de seguimiento enviados dentro de las fechas del corte como evidencia de la gestión de la documentación faltante.</p>
+              <p><strong>Precisión de datos:</strong> Verifique la digitación de los números de ficha de los programas para evitar errores en la validación de evidencias.</p>
+              <p><strong>Herramienta de control:</strong> Utilice la propuesta de seguimiento de oficina central para organizar sus entregas.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tarjeta 5 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">5</div>
+          <h2 class="card-title">Acceso a Classroom</h2>
+          <div class="toggle-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="card-description">
+            <p>Les recordamos que en <strong>Classroom</strong> disponen de una sección exclusiva para la gestión de los Informes SED.</p>
+            <div class="highlight-box" style="background: linear-gradient(135deg, rgba(246, 141, 46, 0.1), rgba(246, 141, 46, 0.15)); border-left-color: #F68D2E;">
+              <p><strong>🤖 Recursos disponibles:</strong></p>
+              <p>Repositorio de prompts de IA para facilitar y agilizar el proceso de revisión de sus documentos.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /cards-grid -->
+  </div><!-- /container -->
+
+  <script>
+    // Evita inicialización doble si por alguna razón el script se carga 2 veces
+    if (!window.__sedCardsInit) {
+      window.__sedCardsInit = true;
+
+      function toggleCard(card) {
+        const allCards = document.querySelectorAll('.card');
+        allCards.forEach(c => {
+          if (c !== card) c.classList.remove('active');
+        });
+        card.classList.toggle('active');
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.card');
+
+        // Click sin onclick inline
+        cards.forEach(card => {
+          card.addEventListener('click', () => toggleCard(card));
+        });
+
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = '1';
+              entry.target.style.transform = 'translateY(0)';
+            }
+          });
+        }, observerOptions);
+
+        cards.forEach(card => observer.observe(card));
+      });
+    }
+  </script>
+</body>
+</html>
